@@ -1,4 +1,4 @@
-`/*
+/*
   MeggyJr_Blink.pde
  
  Example file using the The Meggy Jr Simplified Library (MJSL)
@@ -41,26 +41,93 @@ for loop.
 
 void setup()                    // run once, when the sketch starts
 {
-  MeggyJrSimpleSetup();      // Required code, line 2 of 2.
+  MeggyJrSimpleSetup();   // Required code, line 2 of 2.
+         
 }
 
-void loop()                     // run over and over again
-{
-  
-  for(int j = 0; j < 8; j++){
+int xcoord = 4;          //instance variables for x & y
+int ycoord = 4;
+int dir = 1;   
+int xapple, yapple;
+boolean ateApple = true;
 
-    for(int i = 0; i < 8; i++)
-      {
-        DrawPx(0,i,1);
-        DrawPx(i,0,1);
-        DrawPx(7,i,1);
-        DrawPx(i,7,1);
-        DisplaySlate();
-        delay(100);
-    
-      }
-    }
- 
- 
+void loop()                     // Each time through the loop, when direction button is pressed move the dot in that direction until hits barrier or another button is pressed
+{     
+DrawPx(xcoord,ycoord,15);    // Draw player  
+
+CheckButtonsPress();
+
+
+if (Button_Up)        // Check buttons and set direction
+{
+  dir = 90;
+}
+if (Button_Down)
+{
+  dir = 270;
+}
+if (Button_Left)
+{
+  dir = 180;
+}
+if(Button_Right)
+{
+  dir = 0;
+}
+if (dir == 90)    //if statements to move snake according to direction value
+{
+  ycoord++;
+}
+
+if (dir == 270)
+{
+  ycoord--;
+}
+
+if (dir == 0)
+{
+  xcoord++;
+}
+
+if (dir == 180)
+{
+  xcoord--;
+}
+if (xcoord > 7)    //if statements to adjust barriers
+{
+  xcoord = 0;
+}
+if (ycoord > 7)
+{
+  ycoord = 0;
+}
+if (xcoord < 0)
+{
+  xcoord = 7;
+}
+if (ycoord < 0)
+{
+  ycoord = 7;
+}
+
+if (ateApple)            // Draw apple in random coordinates
+{ 
+  xapple = random(8);
+  yapple = random(8);
+  ateApple = false;
+}
+DrawPx(xapple,yapple,1);                      // Draw Snake
+if (xcoord == xapple && ycoord == yapple)
+{ 
+  ateApple = true;
+}
+if (xcoord == xapple && ycoord == yapple)
+{
+  Tone_Start(ToneDs8,50);      //when apple is eaten, sound is played
+}
+
+DisplaySlate();
+delay(150);
+ClearSlate();
 }
 
