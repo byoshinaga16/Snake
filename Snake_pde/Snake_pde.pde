@@ -45,6 +45,8 @@ void setup()                    // run once, when the sketch starts
          
 }
 
+//int length = 4;          
+int marker = 4;          //variable for snake movement
 int xcoord = 4;          //instance variables for x & y
 int ycoord = 4;
 int dir = 1;   
@@ -65,99 +67,117 @@ Point snakeArray[64] = {s1, s2, s3, s4};
 
 void loop()                     // Each time through the loop, when direction button is pressed move the dot in that direction until hits barrier or another button is pressed
 {     
-DrawPx(snakeArray[0].x, snakeArray [0].y, 2);  //Draws array points
-DrawPx(snakeArray[1].x, snakeArray[1].y, 4);
-DrawPx(snakeArray[2].x, snakeArray[2].y,4);
-DrawPx(snakeArray[3].x, snakeArray[3].y,4);
-DisplaySlate();
+  DrawPx(snakeArray[0].x, snakeArray [0].y, 2);  //Draws snake array points
+  DrawPx(snakeArray[1].x, snakeArray[1].y, 4);
+  DrawPx(snakeArray[2].x, snakeArray[2].y,4);
+  DrawPx(snakeArray[3].x, snakeArray[3].y,4);
+ 
 
-CheckButtonsPress();
+  DisplaySlate();
+
+  CheckButtonsPress();
 
 
-if (Button_Up)        // Check buttons and set direction
-{
-  dir = 90;
-}
-if (Button_Down)
-{
-  dir = 270;
-}
-if (Button_Left)
-{
-  dir = 180;
-}
-if(Button_Right)
-{
-  dir = 0;
-}
-if (dir == 90)    //if statements to move snake according to direction value
-{
-  snakeArray[0].y++;
-  snakeArray[1].y++;
-  snakeArray[2].y++;
-  snakeArray[3].y++;
-}
+  if (Button_Up)        // Check buttons and set direction
+   {
+    dir = 90;
+  }
+  if (Button_Down)
+  {
+    dir = 270;
+  }
+  if (Button_Left)
+  {
+    dir = 180;
+  }
+  if(Button_Right)
+  {
+    dir = 0;
+  }
+  if (dir == 90)    //if statements to move snake according to direction value
+  {
+    snakeArray[0].y++;
+    snakeArray[1].y++;
+    snakeArray[2].y++;
+    snakeArray[3].y++;
+  }
 
-if (dir == 270)
-{
-  snakeArray[0].y--;
-  snakeArray[1].y--;
-  snakeArray[2].y--;
-  snakeArray[3].y--;
-}
+  if (dir == 270)
+  {
+    snakeArray[0].y--;
+    snakeArray[1].y--;
+    snakeArray[2].y--;
+    snakeArray[3].y--;
+  }
 
-if (dir == 0)
-{
-  snakeArray[0].x++;
-  snakeArray[1].x++;
-  snakeArray[2].x++;
-  snakeArray[3].x++;
-}
+  if (dir == 0)
+  {
+    snakeArray[0].x++;
+    snakeArray[1].x++;
+    snakeArray[2].x++;
+    snakeArray[3].x++;
+  }
 
-if (dir == 180)
-{
-  snakeArray[0].x--;
-  snakeArray[1].x--;
-  snakeArray[2].x--;
-  snakeArray[3].x--;
-}
+  if (dir == 180)
+  {
+    snakeArray[0].x--;
+    snakeArray[1].x--;
+    snakeArray[2].x--;
+    snakeArray[3].x--;
+  }
 
-for(int i = 0; i < 4; i++)      //wrap snake
-{
+  for(int i = 0; i < 4; i++)      //wrap snake
+  {
   
-    if (snakeArray[i].x > 7)    
-    {
-      snakeArray[i].x = 0;
-    }
-    if (snakeArray[i].x < 0)
-    {
-      snakeArray[i].x = 7;
-    }
-    if (snakeArray[i].y > 7)
-    {
-      snakeArray[i].y = 0;
-    }
-    if (snakeArray[i].y < 0)
-    {
-      snakeArray[i].y = 7;
-    }
-}
+      if (snakeArray[i].x > 7)    
+      {
+        snakeArray[i].x = 0;
+      }
+      if (snakeArray[i].x < 0)
+      {
+        snakeArray[i].x = 7;
+      }
+      if (snakeArray[i].y > 7)
+      {
+        snakeArray[i].y = 0;
+      }
+      if (snakeArray[i].y < 0)
+      {
+        snakeArray[i].y = 7;
+      }
+  }
 
-if (ateApple)            // Draw apple in random coordinates
-{ 
-  xapple = random(8);
-  yapple = random(8);
-  ateApple = false;
-}
-DrawPx(xapple,yapple,1);                      // Draw Snake
-if (snakeArray[0].x == xapple && snakeArray[0].y == yapple)
-{ 
-  ateApple = true;
-}
-if (snakeArray[0].x == xapple && snakeArray[0].y == yapple)
-{
-  Tone_Start(ToneDs8,50);      //when apple is eaten, sound is played
-}
+  if (ateApple)            // Draw apple in random coordinates
+  { 
+    xapple = random(8);
+    yapple = random(8);
+    ateApple = false;
+  }
+  DrawPx(xapple,yapple,1);                      // Draw Apple
+  if (snakeArray[0].x == xapple && snakeArray[0].y == yapple)
+  { 
+    ateApple = true;
+    Tone_Start(ToneDs8,50);  //when apple is eaten, sound is played
+   
+   // length++;  
+   // DrawPx(snakeArray[length].x,snakeArray[length].y,4);
+  }
+
+  for (int i = 0; i < marker; i++)       //
+  {
+    DrawPx(snakeArray[i].x, snakeArray[i].y, 2);
+  }
+ 
+  for (int i = marker-1; i > 0; i--)    //allows for snake-like movement  
+  {
+    snakeArray[i].x =  snakeArray[i-1].x;
+    snakeArray[i].y =  snakeArray[i-1].y; 
+  } 
+  //for(int i = length; i > 4;)
+  //{
+  //  DrawPx(snakeArray[].x, snakeArray[i].y,4);
+  
+  //}
 
 DisplaySlate();
 delay(150);
